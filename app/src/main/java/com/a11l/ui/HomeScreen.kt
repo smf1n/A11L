@@ -1,12 +1,17 @@
 package com.a11l.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.core.graphics.drawable.toBitmap
 import com.a11l.model.AppInfo
 import com.a11l.ui.theme.palette
 
@@ -23,20 +28,17 @@ fun HomeScreen(
 
     Box(Modifier.fillMaxSize().background(p.bg)) {
 
-        // Рабочий стол
         Column(
             Modifier.fillMaxSize().padding(top = 40.dp)
         ) {
             AppGrid(apps, onLaunchApp, Modifier.weight(1f))
         }
 
-        // Статус-бар (сверху)
         StatusBar(
             modifier = Modifier.align(Alignment.TopCenter),
             onSwipeDown = { showQs = true }
         )
 
-        // Док (снизу)
         Dock(
             apps = apps.take(5),
             onLaunchApp = onLaunchApp,
@@ -44,7 +46,6 @@ fun HomeScreen(
             modifier = Modifier.align(Alignment.BottomCenter)
         )
 
-        // App Drawer (поиск приложений)
         AppDrawer(
             visible = showDrawer,
             apps = apps,
@@ -52,7 +53,6 @@ fun HomeScreen(
             onLaunchApp = onLaunchApp
         )
 
-        // Quick Settings (шторка)
         QuickSettings(
             visible = showQs,
             isDark = isDark,
@@ -81,7 +81,7 @@ private fun AppGrid(
                     AppIcon(app, onLaunchApp)
                 }
                 repeat(4 - row.size) {
-                    Spacer(Modifier.width(64.dp))
+                    Spacer(Modifier.width(72.dp))
                 }
             }
         }
@@ -93,23 +93,24 @@ private fun AppIcon(app: AppInfo, onLaunch: (String) -> Unit) {
     val p = palette
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
-        modifier = Modifier.width(72.dp)
+        modifier = Modifier
+            .width(72.dp)
+            .androidx.compose.foundation.clickable { onLaunch(app.packageName) }
     ) {
-        androidx.compose.foundation.Image(
+        Image(
             bitmap = app.icon.toBitmap(96, 96).asImageBitmap(),
             contentDescription = app.label,
             modifier = Modifier
                 .size(52.dp)
-                .background(p.surface, androidx.compose.foundation.shape.RoundedCornerShape(14.dp))
+                .background(p.surface, RoundedCornerShape(14.dp))
                 .padding(6.dp)
         )
         Spacer(Modifier.height(4.dp))
-        androidx.compose.material3.Text(
+        Text(
             app.label,
             color = p.text,
             fontSize = 10.sp,
-            maxLines = 1,
-            modifier = Modifier.padding(horizontal = 2.dp)
+            maxLines = 1
         )
     }
 }
