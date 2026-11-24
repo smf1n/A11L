@@ -1,0 +1,2 @@
+-keep class com.a11l.** { *; }
+-keepattributes *Annotation*
