@@ -5,20 +5,24 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.graphics.drawable.toBitmap
 import com.a11l.model.AppInfo
 import com.a11l.ui.theme.palette
 
@@ -46,7 +50,7 @@ fun AppDrawer(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
-                    .background(p.surface, androidx.compose.foundation.shape.RoundedCornerShape(24.dp))
+                    .background(p.surface, RoundedCornerShape(24.dp))
                     .padding(horizontal = 16.dp, vertical = 12.dp),
                 textStyle = TextStyle(color = p.text, fontSize = 14.sp),
                 decorationBox = { inner ->
@@ -63,7 +67,7 @@ fun AppDrawer(
                 horizontalArrangement = Arrangement.spacedBy(20.dp),
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
-                items(filtered) { app ->
+                items(filtered, key = { it.packageName }) { app ->
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier.clickable {
@@ -71,7 +75,7 @@ fun AppDrawer(
                             onClose()
                         }
                     ) {
-                        androidx.compose.foundation.Image(
+                        Image(
                             bitmap = app.icon.toBitmap(96, 96).asImageBitmap(),
                             contentDescription = app.label,
                             modifier = Modifier.size(52.dp)
