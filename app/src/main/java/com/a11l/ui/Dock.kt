@@ -1,16 +1,18 @@
 package com.a11l.ui
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.core.graphics.drawable.toBitmap
 import com.a11l.core.D
 import com.a11l.model.AppInfo
 import com.a11l.ui.theme.palette
@@ -40,12 +42,12 @@ fun Dock(
         horizontalArrangement = Arrangement.SpaceEvenly
     ) {
         apps.forEach { app ->
-            androidx.compose.foundation.Image(
+            Image(
                 bitmap = app.icon.toBitmap(96, 96).asImageBitmap(),
                 contentDescription = app.label,
                 modifier = Modifier
-                    .size(48.dp)
-                    .padding(4.dp)
+                    .size(52.dp)
+                    .clickable { onLaunchApp(app.packageName) }
             )
         }
     }
