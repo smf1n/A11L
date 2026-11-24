@@ -2,6 +2,7 @@ package com.a11l.ui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -95,7 +96,7 @@ private fun AppIcon(app: AppInfo, onLaunch: (String) -> Unit) {
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = Modifier
             .width(72.dp)
-            .androidx.compose.foundation.clickable { onLaunch(app.packageName) }
+            .clickable { onLaunch(app.packageName) }
     ) {
         Image(
             bitmap = app.icon.toBitmap(96, 96).asImageBitmap(),
